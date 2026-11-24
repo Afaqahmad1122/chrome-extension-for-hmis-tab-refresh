@@ -1,6 +1,8 @@
 const CONFIG = {
   origin: "https://rmi.vicenna.com",
   connectivityTimeoutMs: 8000,
+  slowThresholdMs: 3000,
+  statusCheckMinutes: 5,
   support: {
     name: "IT Support",
     phone: "",
