@@ -2,27 +2,27 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>HMIS Smart Support</title>
+  <title>Health Cloud Support</title>
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
   <header>
     <img class="logo" src="icons/icon48.png" alt="">
     <div class="titles">
-      <h1>HMIS Smart Support</h1>
-      <p class="subtitle">One-click HMIS fixes</p>
+      <h1>Health Cloud Support</h1>
+      <p class="subtitle">One-click Health Cloud fixes</p>
     </div>
-    <div class="conn" id="conn" title="HMIS connectivity">
+    <div class="conn" id="conn" title="Health Cloud connectivity">
       <span class="dot" id="connDot"></span>
       <span id="connText">Checking...</span>
     </div>
   </header>
 
   <main>
-    <p class="notice" id="offSite" hidden>Open the HMIS page in this tab to use the fix buttons.</p>
+    <p class="notice" id="offSite" hidden>Open the Health Cloud page in this tab to use the fix buttons.</p>
 
-    <button class="primary" id="fixBtn" data-hmis>Fix HMIS</button>
-    <p class="hint">Clears HMIS cached files and reloads this tab. Save unfinished work first.</p>
+    <button class="primary" id="fixBtn" data-hmis>Fix Health Cloud</button>
+    <p class="hint">Clears Health Cloud cached files and reloads this tab. Save unfinished work first.</p>
 
     <div class="row">
       <button id="refreshBtn" data-hmis>Hard refresh</button>
@@ -41,7 +41,7 @@
   <div class="sections">
   <details>
     <summary>Advanced: reset session data</summary>
-    <p class="hint">Clears HMIS cookies and site storage, then reloads. You will be logged out. Save your work first.</p>
+    <p class="hint">Clears Health Cloud cookies and site storage, then reloads. You will be logged out. Save your work first.</p>
     <button class="danger" id="resetBtn" data-hmis>Reset session data</button>
   </details>
 
@@ -49,9 +49,9 @@
     <summary>Troubleshooting guide</summary>
     <dl>
       <dt>Blank or half-loaded page</dt>
-      <dd>Click Fix HMIS. If still blank, run Check connection.</dd>
+      <dd>Click Fix Health Cloud. If still blank, run Check connection.</dd>
       <dt>Buttons not responding</dt>
-      <dd>Click Hard refresh, then Fix HMIS.</dd>
+      <dd>Click Hard refresh, then Fix Health Cloud.</dd>
       <dt>Login errors</dt>
       <dd>Save work, log out, log in again. If it persists, use Reset session data.</dd>
       <dt>Missing menus or permissions</dt>

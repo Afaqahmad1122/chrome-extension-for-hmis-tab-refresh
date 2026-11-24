@@ -70,8 +70,8 @@ async function runAction(name, task, successMessage) {
 }
 
 async function fixHmis() {
-  if (!confirm("Save any unfinished work first.\n\nThis clears HMIS cached files and reloads this tab. Continue?")) return;
-  await runAction("Fix HMIS", async () => {
+  if (!confirm("Save any unfinished work first.\n\nThis clears Health Cloud cached files and reloads this tab. Continue?")) return;
+  await runAction("Fix Health Cloud", async () => {
     await chrome.browsingData.remove(
       { origins: [CONFIG.origin] },
       { cache: true, cacheStorage: true, serviceWorkers: true }
@@ -87,7 +87,7 @@ async function hardRefresh() {
 }
 
 async function resetSession() {
-  if (!confirm("You will be logged out of HMIS and unsaved work will be lost.\n\nContinue?")) return;
+  if (!confirm("You will be logged out of Health Cloud and unsaved work will be lost.\n\nContinue?")) return;
   await runAction("Reset session data", async () => {
     await chrome.browsingData.remove(
       { origins: [CONFIG.origin] },
@@ -122,18 +122,18 @@ async function checkConnection() {
     const ms = Math.round(performance.now() - started);
     if (response.ok) {
       setConnection("ok", `Reachable (${ms} ms)`);
-      setStatus("HMIS server is reachable. This does not prove every feature works.", "ok");
+      setStatus("Health Cloud server is reachable. This does not prove every feature works.", "ok");
     } else {
       setConnection("warn", `Server error ${response.status}`);
-      setStatus(`HMIS server answered with error ${response.status}. Contact IT.`, "err");
+      setStatus(`Health Cloud server answered with error ${response.status}. Contact IT.`, "err");
     }
   } catch (e) {
     if (e.name === "AbortError") {
       setConnection("warn", "Timed out");
-      setStatus("HMIS server did not answer in time. Network may be slow or HMIS is down.", "err");
+      setStatus("Health Cloud server did not answer in time. Network may be slow or Health Cloud is down.", "err");
     } else {
       setConnection("err", "Unreachable");
-      setStatus("Could not reach HMIS. Check the network or contact IT.", "err");
+      setStatus("Could not reach Health Cloud. Check the network or contact IT.", "err");
     }
   } finally {
     clearTimeout(timer);
@@ -179,7 +179,7 @@ function diagnostics() {
     `Extension version: ${chrome.runtime.getManifest().version}`,
     `Chrome version: ${chromeVersion}`,
     `Network online: ${navigator.onLine}`,
-    `HMIS check: ${state.connectivity}`,
+    `Health Cloud check: ${state.connectivity}`,
     `Last action: ${last}`
   ].join("\n");
 }
@@ -191,7 +191,7 @@ function buildReportLink() {
     $("mailLink").hidden = true;
     return;
   }
-  const subject = encodeURIComponent("HMIS issue report");
+  const subject = encodeURIComponent("Health Cloud issue report");
   const body = encodeURIComponent(
     "Describe the problem (do not include patient names or IDs):\n\n\n--- Diagnostics ---\n" + diagnostics()
   );
