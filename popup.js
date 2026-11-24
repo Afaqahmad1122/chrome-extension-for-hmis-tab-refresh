@@ -150,9 +150,23 @@ function renderContact() {
     p.textContent = text;
     box.appendChild(p);
   };
-  add(name);
+  const title = document.createElement("p");
+  title.className = "contact-title";
+  title.textContent = name;
+  box.appendChild(title);
+  contacts.forEach((c) => {
+    const card = document.createElement("div");
+    card.className = "contact";
+    const role = document.createElement("span");
+    role.className = "role";
+    role.textContent = c.role;
+    const mail = document.createElement("span");
+    mail.className = "email";
+    mail.textContent = c.email;
+    card.append(role, mail);
+    box.appendChild(card);
+  });
   if (phone) add("Phone: " + phone);
-  contacts.forEach((c) => add(`${c.role}: ${c.email}`));
   if (!phone && contacts.length === 0) add("Contact details are not configured yet.");
 }
 
