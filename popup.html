@@ -7,31 +7,38 @@
 </head>
 <body>
   <header>
-    <h1>HMIS Smart Support</h1>
+    <img class="logo" src="icons/icon48.png" alt="">
+    <div class="titles">
+      <h1>HMIS Smart Support</h1>
+      <p class="subtitle">One-click HMIS fixes</p>
+    </div>
     <div class="conn" id="conn" title="HMIS connectivity">
       <span class="dot" id="connDot"></span>
       <span id="connText">Checking...</span>
     </div>
   </header>
 
-  <p class="notice" id="offSite" hidden>Open the HMIS page in this tab to use the fix buttons.</p>
+  <main>
+    <p class="notice" id="offSite" hidden>Open the HMIS page in this tab to use the fix buttons.</p>
 
-  <button class="primary" id="fixBtn" data-hmis>Fix HMIS</button>
-  <p class="hint">Clears HMIS cached files and reloads this tab. Save unfinished work first.</p>
+    <button class="primary" id="fixBtn" data-hmis>Fix HMIS</button>
+    <p class="hint">Clears HMIS cached files and reloads this tab. Save unfinished work first.</p>
 
-  <div class="row">
-    <button id="refreshBtn" data-hmis>Hard refresh</button>
-    <button id="checkBtn">Check connection</button>
-  </div>
+    <div class="row">
+      <button id="refreshBtn" data-hmis>Hard refresh</button>
+      <button id="checkBtn">Check connection</button>
+    </div>
 
-  <div class="status" id="status" role="status"></div>
+    <div class="status" id="status" role="status"></div>
 
-  <div class="feedback" id="feedback" hidden>
-    <span>Was the issue resolved?</span>
-    <button id="yesBtn">Yes</button>
-    <button id="noBtn">No</button>
-  </div>
+    <div class="feedback" id="feedback" hidden>
+      <span>Was the issue resolved?</span>
+      <button id="yesBtn">Yes</button>
+      <button id="noBtn">No</button>
+    </div>
+  </main>
 
+  <div class="sections">
   <details>
     <summary>Advanced: reset session data</summary>
     <p class="hint">Clears HMIS cookies and site storage, then reloads. You will be logged out. Save your work first.</p>
@@ -60,6 +67,7 @@
     <a class="linkbtn" id="reportLink" href="#">Draft issue report email</a>
     <p class="hint">The draft includes only the extension version, Chrome version and check results. No patient data or page URLs.</p>
   </details>
+  </div>
 
   <footer>
     <span id="lastAction">No actions yet</span>
