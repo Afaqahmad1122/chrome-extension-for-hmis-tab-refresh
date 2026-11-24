@@ -142,7 +142,7 @@ async function checkConnection() {
 }
 
 function renderContact() {
-  const { name, phone, email } = CONFIG.support;
+  const { name, phone, contacts } = CONFIG.support;
   const box = $("contactInfo");
   box.textContent = "";
   const add = (text) => {
@@ -152,8 +152,8 @@ function renderContact() {
   };
   add(name);
   if (phone) add("Phone: " + phone);
-  if (email) add("Email: " + email);
-  if (!phone && !email) add("Contact details are not configured yet.");
+  contacts.forEach((c) => add(`${c.role}: ${c.email}`));
+  if (!phone && contacts.length === 0) add("Contact details are not configured yet.");
 }
 
 function diagnostics() {
@@ -171,16 +171,19 @@ function diagnostics() {
 }
 
 function buildReportLink() {
-  const email = CONFIG.support.email;
+  const email = CONFIG.support.contacts.map((c) => c.email).join(",");
   if (!email) {
-    $("reportLink").hidden = true;
+    $("outlookLink").hidden = true;
+    $("mailLink").hidden = true;
     return;
   }
   const subject = encodeURIComponent("HMIS issue report");
   const body = encodeURIComponent(
     "Describe the problem (do not include patient names or IDs):\n\n\n--- Diagnostics ---\n" + diagnostics()
   );
-  $("reportLink").href = `mailto:${email}?subject=${subject}&body=${body}`;
+  const query = `subject=${subject}&body=${body}`;
+  $("outlookLink").href = `https://outlook.office.com/mail/deeplink/compose?to=${email}&${query}`;
+  $("mailLink").href = `mailto:${email}?${query}`;
 }
 
 function bindFeedback() {

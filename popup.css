@@ -162,6 +162,9 @@ dd { margin: 2px 0 0; color: #3e4c59; }
   text-decoration: none;
 }
 .linkbtn:hover { background: #d6eaf8; }
+.linkbtn.secondary { color: var(--text); background: #fff; border: 1px solid var(--border); }
+.linkbtn.secondary:hover { background: #eef3f6; }
+.linkrow { display: flex; flex-wrap: wrap; gap: 8px; }
 
 footer {
   display: flex;
