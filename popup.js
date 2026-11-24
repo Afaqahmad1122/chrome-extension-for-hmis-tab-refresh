@@ -172,16 +172,33 @@ function renderContact() {
 
 function diagnostics() {
   const chromeVersion = (navigator.userAgent.match(/Chrome\/([\d.]+)/) || [])[1] || "unknown";
-  const last = state.lastAction
-    ? `${state.lastAction.name} at ${new Date(state.lastAction.time).toLocaleString()}`
-    : "none";
   return [
     `Extension version: ${chrome.runtime.getManifest().version}`,
     `Chrome version: ${chromeVersion}`,
     `Network online: ${navigator.onLine}`,
     `Health Cloud check: ${state.connectivity}`,
-    `Last action: ${last}`
+    `Computer date and time: ${new Date().toLocaleString()}`
   ].join("\n");
+}
+
+function describeTried() {
+  const last = state.lastAction;
+  if (!last) return "Nothing yet.";
+  const when = new Date(last.time).toLocaleString();
+  let result = "";
+  if (last.resolved === true) result = " Result: Fixed.";
+  if (last.resolved === false) result = " Result: Not fixed.";
+  return `${last.name} at ${when}.${result}`;
+}
+
+async function recordResult(resolved) {
+  if (!state.lastAction) return;
+  state.lastAction.resolved = resolved;
+  try {
+    await chrome.storage.local.set({ lastAction: state.lastAction });
+  } catch (e) {
+    return;
+  }
 }
 
 function buildReportLink() {
@@ -192,10 +209,25 @@ function buildReportLink() {
     return;
   }
   const category = $("issueType").value || "Not specified";
-  const subject = encodeURIComponent(`Health Cloud issue: ${category}`);
+  const urgency = $("urgency").value;
+  const urgentTag = urgency === "Urgent" ? " (Urgent)" : "";
+  const subject = encodeURIComponent(`Health Cloud issue: ${category}${urgentTag}`);
   const body = encodeURIComponent(
-    `Issue type: ${category}\n\nDescribe the problem (do not include patient names or IDs):\n\n\n--- Diagnostics ---\n` +
+    [
+      `Issue type: ${category}`,
+      `Urgency: ${urgency}`,
+      "",
+      "Page or menu (example: Patients, Pharmacy Orders):",
+      "",
+      "What is wrong (write the error message if you see one):",
+      "",
+      `What I tried: ${describeTried()}`,
+      "",
+      "Please do not write patient names or ID numbers.",
+      "",
+      "--- Technical details ---",
       diagnostics()
+    ].join("\n")
   );
   const query = `subject=${subject}&body=${body}`;
   $("outlookLink").href = `https://outlook.office.com/mail/deeplink/compose?to=${email}&${query}`;
@@ -205,10 +237,12 @@ function buildReportLink() {
 function bindFeedback() {
   $("yesBtn").addEventListener("click", () => {
     $("feedback").hidden = true;
+    recordResult(true);
     setStatus("Glad it worked.", "ok");
   });
   $("noBtn").addEventListener("click", () => {
     $("feedback").hidden = true;
+    recordResult(false);
     setStatus("Try Hard refresh or Reset session data, then contact IT if it continues.", "err");
     $("contactBox").open = true;
     buildReportLink();
@@ -227,6 +261,7 @@ async function init() {
     $("issueType").appendChild(option);
   });
   $("issueType").addEventListener("change", buildReportLink);
+  $("urgency").addEventListener("change", buildReportLink);
 
   $("fixBtn").addEventListener("click", fixHmis);
   $("refreshBtn").addEventListener("click", hardRefresh);
