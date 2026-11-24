@@ -33,13 +33,24 @@ async function detectTab() {
   state.onHmis = Boolean(tab && tab.url && tab.url.startsWith(CONFIG.origin + "/"));
 }
 
+function formatTime(ms) {
+  return new Date(ms).toLocaleString("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true
+  });
+}
+
 function renderLastAction() {
   const el = $("lastAction");
   if (!state.lastAction) {
     el.textContent = "No actions yet";
     return;
   }
-  const when = new Date(state.lastAction.time).toLocaleString();
+  const when = formatTime(state.lastAction.time);
   el.textContent = `Last: ${state.lastAction.name}, ${when}`;
 }
 
@@ -175,20 +186,20 @@ function diagnostics() {
   return [
     `Extension version: ${chrome.runtime.getManifest().version}`,
     `Chrome version: ${chromeVersion}`,
+    `Operating system: ${(navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform}`,
     `Network online: ${navigator.onLine}`,
     `Health Cloud check: ${state.connectivity}`,
-    `Computer date and time: ${new Date().toLocaleString()}`
+    `Computer date and time: ${formatTime(Date.now())}`
   ].join("\n");
 }
 
 function describeTried() {
   const last = state.lastAction;
   if (!last) return "Nothing yet.";
-  const when = new Date(last.time).toLocaleString();
-  let result = "";
-  if (last.resolved === true) result = " Result: Fixed.";
-  if (last.resolved === false) result = " Result: Not fixed.";
-  return `${last.name} at ${when}.${result}`;
+  let result = "not answered";
+  if (last.resolved === true) result = "Fixed";
+  if (last.resolved === false) result = "Not fixed";
+  return `${last.name} at ${formatTime(last.time)}. Result: ${result}.`;
 }
 
 async function recordResult(resolved) {
@@ -212,23 +223,27 @@ function buildReportLink() {
   const urgency = $("urgency").value;
   const urgentTag = urgency === "Urgent" ? " (Urgent)" : "";
   const subject = encodeURIComponent(`Health Cloud issue: ${category}${urgentTag}`);
-  const body = encodeURIComponent(
-    [
-      `Issue type: ${category}`,
-      `Urgency: ${urgency}`,
-      "",
-      "Page or menu (example: Patients, Pharmacy Orders):",
-      "",
-      "What is wrong (write the error message if you see one):",
-      "",
-      `What I tried: ${describeTried()}`,
-      "",
-      "Please do not write patient names or ID numbers.",
-      "",
-      "--- Technical details ---",
-      diagnostics()
-    ].join("\n")
+  const lines = [];
+  if (urgency === "Urgent") lines.push("URGENT: patient care is affected", "");
+  lines.push(
+    `Issue type: ${category}`,
+    `Urgency: ${urgency}`,
+    "",
+    "My name:",
+    "Department:",
+    "Phone or Ext:",
+    "",
+    "Page or menu (for example Patients):",
+    "What is wrong (write the error message if you see one):",
+    "",
+    `What I tried: ${describeTried()}`,
+    "",
+    "Please do not write patient names or ID numbers.",
+    "",
+    "--- Technical details ---",
+    diagnostics()
   );
+  const body = encodeURIComponent(lines.join("\n"));
   const query = `subject=${subject}&body=${body}`;
   $("outlookLink").href = `https://outlook.office.com/mail/deeplink/compose?to=${email}&${query}`;
   $("mailLink").href = `mailto:${email}?${query}`;
