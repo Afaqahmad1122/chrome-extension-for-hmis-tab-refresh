@@ -3,6 +3,7 @@ const CONFIG = {
   connectivityTimeoutMs: 8000,
   slowThresholdMs: 3000,
   statusCheckMinutes: 5,
+  issueCategories: ["Page blank", "Login", "Slow", "Print", "Other"],
   support: {
     name: "IT Support",
     phone: "",

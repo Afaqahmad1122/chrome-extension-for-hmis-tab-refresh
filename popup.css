@@ -190,6 +190,18 @@ dd { margin: 2px 0 0; color: #3e4c59; }
 .linkbtn.secondary { color: var(--text); background: #fff; border: 1px solid var(--border); }
 .linkbtn.secondary:hover { background: #eef3f6; }
 .linkrow { display: flex; flex-wrap: wrap; gap: 8px; }
+.field { display: block; margin-top: 12px; font-size: 12px; font-weight: 600; color: var(--muted); }
+select {
+  width: 100%;
+  margin-top: 4px;
+  padding: 9px 10px;
+  font: inherit;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+}
+select:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
 
 footer {
   display: flex;

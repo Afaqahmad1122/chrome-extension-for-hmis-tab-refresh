@@ -191,9 +191,11 @@ function buildReportLink() {
     $("mailLink").hidden = true;
     return;
   }
-  const subject = encodeURIComponent("Health Cloud issue report");
+  const category = $("issueType").value || "Not specified";
+  const subject = encodeURIComponent(`Health Cloud issue: ${category}`);
   const body = encodeURIComponent(
-    "Describe the problem (do not include patient names or IDs):\n\n\n--- Diagnostics ---\n" + diagnostics()
+    `Issue type: ${category}\n\nDescribe the problem (do not include patient names or IDs):\n\n\n--- Diagnostics ---\n` +
+      diagnostics()
   );
   const query = `subject=${subject}&body=${body}`;
   $("outlookLink").href = `https://outlook.office.com/mail/deeplink/compose?to=${email}&${query}`;
@@ -217,6 +219,14 @@ async function init() {
   $("version").textContent = "v" + chrome.runtime.getManifest().version;
   renderContact();
   bindFeedback();
+
+  CONFIG.issueCategories.forEach((label) => {
+    const option = document.createElement("option");
+    option.value = label;
+    option.textContent = label;
+    $("issueType").appendChild(option);
+  });
+  $("issueType").addEventListener("change", buildReportLink);
 
   $("fixBtn").addEventListener("click", fixHmis);
   $("refreshBtn").addEventListener("click", hardRefresh);
