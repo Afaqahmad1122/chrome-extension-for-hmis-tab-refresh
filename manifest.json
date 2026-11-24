@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "HMIS Smart Support",
+  "version": "1.0.0",
+  "description": "One-click troubleshooting for browser-related HMIS problems: cache fix, hard refresh, connectivity check and IT contact.",
+  "permissions": ["browsingData", "storage", "scripting"],
+  "host_permissions": ["https://rmi.vicenna.com/*"],
+  "action": {
+    "default_title": "HMIS Smart Support",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
