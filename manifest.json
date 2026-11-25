@@ -2,6 +2,7 @@
   "manifest_version": 3,
   "name": "Health Cloud Support",
   "version": "1.0.0",
+  "minimum_chrome_version": "92",
   "description": "One-click troubleshooting for browser-related Health Cloud problems: cache fix, hard refresh, connectivity check and IT contact.",
   "permissions": ["browsingData", "storage", "scripting", "alarms"],
   "host_permissions": ["https://rmi.vicenna.com/*"],

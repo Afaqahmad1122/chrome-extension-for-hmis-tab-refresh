@@ -1,5 +1,7 @@
 Health Cloud Support - installation
 
+Works on Chrome, Edge, Brave, Opera and Vivaldi version 92 or newer. Firefox and Safari are not supported.
+
 1. Extract the ZIP to a permanent folder (do not delete it afterwards).
 2. Open chrome://extensions in Chrome.
 3. Turn on Developer mode (top right).
