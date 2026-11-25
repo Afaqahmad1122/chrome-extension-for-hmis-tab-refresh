@@ -215,4 +215,13 @@ footer {
   background: #fff;
 }
 
+.credit {
+  padding: 8px 18px 12px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--blue-dark);
+  background: #fff;
+}
+
 [hidden] { display: none !important; }
